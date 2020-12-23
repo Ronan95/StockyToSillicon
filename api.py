@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import Api, Resource, reqparse, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from sqlalchemy import desc
 
 
 ################## CONFIG ##################
@@ -104,10 +105,22 @@ class StockPost(Resource):
         
         return stocky_schema.dump(stock)
 
+class StockOrder(Resource):
+
+    @marshal_with(resource_fields)
+    def get(self):
+        stock= StockModel.query.order_by(desc(StockModel.price)).all()
+
+        stocky_schema = StockSchema(many=True)
+        
+        return stocky_schema.dump(stock)
+
 
 api.add_resource(StockPut, "/stock/create")
 api.add_resource(StockPost, "/stock/<name>/update")
 api.add_resource(StockGet, "/stock/<name>")
+api.add_resource(StockOrder, "/stock/all")
+
 
 
 

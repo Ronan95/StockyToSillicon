@@ -43,7 +43,38 @@ STOCKS_INFO = [
         "US": "https://finance.yahoo.com/quote/AMZN?p=AMZN&.tsrc=fin-srch", 
         "BA": "https://finance.yahoo.com/quote/AMZN.BA?p=AMZN.BA&.tsrc=fin-srch",
         "multiplier":144
+    },
+    {
+        "name": "MSFT",
+        "US": "https://finance.yahoo.com/quote/MSFT?p=MSFT&.tsrc=fin-srch", 
+        "BA": "https://finance.yahoo.com/quote/MSFT.BA?p=MSFT.BA&.tsrc=fin-srch",
+        "multiplier":10
+    },
+     {
+        "name": "NFLX",
+        "US": "https://finance.yahoo.com/quote/NFLX?p=NFLX&.tsrc=fin-srch", 
+        "BA": "https://finance.yahoo.com/quote/NFLX.BA?p=NFLX.BA&.tsrc=fin-srch",
+        "multiplier":16
+    },
+    {
+        "name": "FB",
+        "US": "https://finance.yahoo.com/quote/FB?p=FB&.tsrc=fin-srch", 
+        "BA": "https://finance.yahoo.com/quote/FB.BA?p=FB.BA&.tsrc=fin-srch",
+        "multiplier":8
+    },
+     {
+        "name": "GOOGL",
+        "US": "https://finance.yahoo.com/quote/GOOGL?p=GOOGL&.tsrc=fin-srch", 
+        "BA": "https://finance.yahoo.com/quote/GOOGL.BA?p=GOOGL.BA&.tsrc=fin-srch",
+        "multiplier":58
+    },
+    {
+        "name": "AUY",
+        "US": "https://finance.yahoo.com/quote/AUY?p=AUY&.tsrc=fin-srch", 
+        "BA": "https://finance.yahoo.com/quote/AUY.BA?p=AUY.BA&.tsrc=fin-srch",
+        "multiplier":1
     }
+
 ]
 
 
@@ -89,12 +120,9 @@ def get_stocks():
         stocks.append({
             'name':name,
             'price':ccl
-        })
+        })  
 
     return stocks
-
-
-
 
 print(Style.BRIGHT + Fore.RESET + figlet_format("Stocky Scraper"))
 
@@ -130,6 +158,16 @@ try:
             print(f'{Style.BRIGHT}{Fore.YELLOW}[+]{Fore.RESET} Stock updated: {Fore.GREEN}{updated_stock}{Style.RESET_ALL}')
 
         print()
+
+        stocks= requests.get('localhost:5000/stock/all')
+
+        stocks= stocks.json()
+
+        for stock in stocks:
+            print(f'{stock["name"]}, {stock["price"]}')
+        
+        print()
+
 
 except KeyboardInterrupt:
     pass
